@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class MarcaController {
     }
 
     @PostMapping
-    public ResponseEntity<Marca> cadastraMarca(@RequestBody Marca novaMarca, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<Marca> cadastraMarca(@Valid @RequestBody Marca novaMarca, UriComponentsBuilder uriBuilder) {
         Marca marcaSalva = marcaRepository.save(novaMarca);
 
         URI location = uriBuilder.path("/marcas/{id}")
@@ -42,7 +43,7 @@ public class MarcaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Marca> alteraNome(@PathVariable Long id, @RequestBody Marca marcaAlterada) {
+    public ResponseEntity<Marca> alteraNome(@PathVariable Long id, @Valid @RequestBody Marca marcaAlterada) {
         return marcaRepository.findById(id)
                 .map(marcaCadastrada -> {
                     marcaCadastrada.setNome(marcaAlterada.getNome());

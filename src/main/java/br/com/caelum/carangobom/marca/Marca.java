@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -19,6 +21,9 @@ public class Marca {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(min = 2, message = "Deve ter {min} ou mais caracteres.")
     private String nome;
 
     public Marca(String nome) {
