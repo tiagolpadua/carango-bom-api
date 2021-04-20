@@ -1,31 +1,30 @@
 package br.com.caelum.carangobom.componentes;
 
-import br.com.caelum.carangobom.marca.Marca;
 import br.com.caelum.carangobom.testcontainer.MySQLCustomContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.testcontainers.containers.MySQLContainer;
 
 import javax.transaction.Transactional;
 
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class MarcaControllerIT {
+public class VeiculoControllerIT {
 
-    static final int QUANTIDADE_ORIGINAL_REGISTROS = 7;
+    static final int QUANTIDADE_ORIGINAL_REGISTROS = 9;
 
     static final MySQLContainer<MySQLCustomContainer> mysql = MySQLCustomContainer.getInstance();
 
@@ -41,16 +40,20 @@ public class MarcaControllerIT {
     ObjectMapper mapper;
 
     @Test
-    void deveListarMarcasOrdenadasAlfabeticamente() throws Exception {
+    void deveListarVeiculosOrdenadosPorNomeDaMarcaEModelo() throws Exception {
         verificaListagemInicial()
-            .andExpect(jsonPath("$[6].id", is(2)))
-            .andExpect(jsonPath("$[6].nome", is("Volkswagen")));
+                .andExpect(jsonPath("$[8].id", is(3)))
+                .andExpect(jsonPath("$[8].modelo", is("Polo")))
+                .andExpect(jsonPath("$[8].marcaId", is(2)))
+                .andExpect(jsonPath("$[8].ano", is(2021)))
+                .andExpect(jsonPath("$[8].valor", is(78000.0)));
     }
 
+    /*
     @Test
     void deveRecuperarMarcaPorIdExistente() throws Exception {
         validaMarca(new Marca(1L, "Fiat"))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -111,12 +114,12 @@ public class MarcaControllerIT {
     @Test
     void deveExcluirMarcaExistente() throws Exception {
         mockMvc.perform(delete("/marcas/1"))
-            .andDo(print())
-            .andExpect(status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
 
         mockMvc.perform(get("/marcas/1"))
-            .andDo(print())
-            .andExpect(status().isNotFound());
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     private ResultActions validaMarca(Marca marca) throws Exception {
@@ -135,8 +138,10 @@ public class MarcaControllerIT {
                 .andExpect(jsonPath("$.erros[*].mensagem", containsInAnyOrder("Deve ser preenchido.", "Deve ter 2 ou mais caracteres.")));
     }
 
+
+    */
     private ResultActions verificaListagemInicial() throws Exception {
-        return mockMvc.perform(get("/marcas"))
+        return mockMvc.perform(get("/veiculos"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(QUANTIDADE_ORIGINAL_REGISTROS)));

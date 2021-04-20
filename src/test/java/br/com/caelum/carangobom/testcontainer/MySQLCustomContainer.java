@@ -13,7 +13,7 @@ public class MySQLCustomContainer extends MySQLContainer<MySQLCustomContainer> {
 
     public static synchronized MySQLCustomContainer getInstance() {
         if (instancia == null) {
-            instancia = new MySQLCustomContainer("mysql:8");
+            instancia = new MySQLCustomContainer("mysql:5");
         }
 
         return instancia;
