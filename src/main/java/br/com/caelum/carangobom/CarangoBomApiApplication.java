@@ -21,7 +21,7 @@ public class CarangoBomApiApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/marcas").allowedOrigins("http://localhost:3000");
+				registry.addMapping("/*").allowedOriginPatterns("*");
 			}
 		};
 	}
