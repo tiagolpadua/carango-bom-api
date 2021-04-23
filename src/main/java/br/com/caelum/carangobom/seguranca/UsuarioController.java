@@ -41,7 +41,7 @@ public class UsuarioController {
         Optional<Usuario> usuarioJahCadastrado = usuarioRepository.findByUsername(usuario.getUsername());
 
         if (usuarioJahCadastrado.isPresent()) {
-            return ResponseEntity.badRequest().body("Usuário " + usuario.getUsername() + " já existe.");
+            return ResponseEntity.badRequest().body("\"Usuário " + usuario.getUsername() + " já existe.\"");
         } else {
             Usuario novoUsuario = usuarioRepository.save(usuario);
 
